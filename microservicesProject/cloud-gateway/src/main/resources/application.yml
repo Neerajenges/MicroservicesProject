@@ -1,0 +1,77 @@
+server:
+   port: 8082
+
+spring:
+  application:
+    name : gateway-service
+  cloud:
+    gateway:
+      routes:
+        - id: order-service
+          uri: lb://ORDER-SERVICE
+          predicates:
+            - Path=/order/**
+          filters:
+            - name: CircuitBreaker
+              args:
+               name: ORDER-SERVICE
+               fallbackuri: forward:/fallback/orderFallback
+        - id: payment-service
+          uri: lb://PAYMENT-SERVICE
+          predicates:
+            - Path=/payment/**
+          filters:
+            - name: CircuitBreaker
+              args:
+               name: PAYMENT-SERVICE
+               fallbackuri: forward:/fallback/paymentFallback
+
+ 
+
+
+eureka:
+  client:
+   register-with-eureka: true
+   fetch-registry: true
+   serviceUrl:
+     defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname:localhost
+
+
+
+ 
+
+
+management:
+endpoints:
+  web:
+   exposure:
+    include : hystrix-stream
+
+ 
+
+
+hystrix:
+command:
+  fallbackcmd:
+    execution:
+      isolation:
+        thread:
+          timeoutInMilliseconds: 5000
+          
+          
+          
+          
+microservice:
+  payment-service:
+    endpoints:
+      endpoint:
+        uri: https://PAYMENT-SERVICE/payment/doPayment
+       
+  order-service:
+    endpoints:
+      endpoint:
+        uri: https://ORDER-SERVICE/order/bookOrder
+        
+        

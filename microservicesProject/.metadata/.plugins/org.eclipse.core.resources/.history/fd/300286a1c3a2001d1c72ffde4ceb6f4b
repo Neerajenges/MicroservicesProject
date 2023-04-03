@@ -1,0 +1,28 @@
+server:
+  port: 8080
+  
+spring:
+  application:
+    name: ORDER-SERVER
+ 
+        
+  h2:
+    console:
+      enabled: true
+  jpa:
+    database-plateform: org.hibernate.dialect.H2Dialect
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: 
+    
+  
+eureka:
+  client:
+   register-with-eureka: true
+   fetch-registry: true
+   serviceUrl:
+     defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname:localhost

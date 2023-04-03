@@ -1,0 +1,7 @@
+#bootstrap.yml will load before the application.yml file 
+
+spring:
+   cloud:
+    config:
+      uri:
+        -http://localhost:8085
